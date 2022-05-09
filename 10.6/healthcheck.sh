@@ -18,7 +18,9 @@
 # Some tests require SQL privileges.
 #
 # TEST                      MINIMUM GRANTS REQUIRED
-# connect                   none*
+# tcp_connect               none
+# connect                   none
+# mariadb_connect           none*
 # innodb_initialized        USAGE
 # innodb_buffer_pool_loaded USAGE
 # galera_online             USAGE
@@ -46,6 +48,28 @@ _process_sql()
 
 # TESTS
 
+# TCP_LISTENING
+#
+# Test if the pid 1, the final mariadbd process, has any TCP ports
+# listening. The listening occurs immediately before the accepting of
+# connections in the MariaDB server so be adequate as a healthcheck.
+# The exception to this if the MariaDB container is started by some form of
+# socket activation.
+# Matching the 0A state of the remote port of :0000,
+#::::::::::::::
+#/proc/1/net/tcp
+#::::::::::::::
+#  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+#   0: 00000000:0CEA 00000000:0000 0A 00000000:00000000 00:00000000 00000000   999        0 8336271 1 00000000b2576127 100 0 0 10 0
+#::::::::::::::
+#/proc/1/net/tcp6
+#::::::::::::::
+#  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+#   0: 00000000000000000000000000000000:0CEA 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000   999        0 8336272 1 0000000065091cce 100 0 0 10 0
+tcp_listening()
+{
+	grep -q ':0000 0A ' /proc/1/net/tcp{,6}
+}
 
 # CONNECT
 #
@@ -53,6 +77,16 @@ _process_sql()
 # of the entrypoint and is listening. The authentication used
 # isn't tested.
 connect()
+{
+	tcp_listening
+}
+
+# MARIADB_CONNECT
+#
+# Test that the connection isn't refused by the server using the mariadb client.
+# Note: this was formerly connect, but generated frequent Access Denied errors
+# in the container log.
+mariadb_connect()
 {
 	set +e +o pipefail
 	mariadb ${nodefaults:+--no-defaults} \
