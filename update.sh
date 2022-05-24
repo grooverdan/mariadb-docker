@@ -12,6 +12,8 @@ declare -A suites=(
 	[10.5]='focal'
 	[10.6]='focal'
 	[10.7]='focal'
+	['10.8-focal']='focal'
+	['10.9-focal']='focal'
 )
 
 #declare -A dpkgArchToBashbrew=(
@@ -67,7 +69,7 @@ update_version()
 		10.5)
 			sed -i '/backwards compat/d' "$version/Dockerfile"
 			;;
-		10.9 | 10.10)
+		10.9 | 10.9-* | 10.10)
 			# quoted $ intentional
 			# shellcheck disable=SC2016
 			sed -i -e '/^ARG MARIADB_MAJOR/d' \
@@ -93,7 +95,7 @@ update_version()
 
 mariaversion()
 {
-	mariaVersion=$( curl -fsSL https://downloads.mariadb.org/rest-api/mariadb/"${version}" \
+	mariaVersion=$( curl -fsSL https://downloads.mariadb.org/rest-api/mariadb/"${version%-*}" \
 	       | jq 'first(..|select(.release_id)) | .release_id' )
 	mariaVersion=${mariaVersion//\"}
 }
@@ -151,13 +153,13 @@ for version in "${versions[@]}"; do
 		continue
 	fi
 	if [ ! -d "$version" ]; then
-		mariaVersion=$version
+		mariaVersion=${version%-*}
 		version=${version%.[[:digit:]]*}
 	else
 		mariaversion
 	fi
 	releaseStatus=$(curl -fsSL https://downloads.mariadb.org/rest-api/mariadb/ \
-		| jq ".major_releases[] | select(.release_id == \"$version\") | .release_status")
+		| jq ".major_releases[] | select(.release_id == \"${version%-*}\") | .release_status")
 	releaseStatus=${releaseStatus//\"}
 	
 	update_version
