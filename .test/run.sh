@@ -47,7 +47,7 @@ runandwait()
 	port=$(docker port "$cname" 3306)
 	port=${port#*:}
 
-	waiting=${DOCKER_LIBRARY_START_TIMEOUT:-10}
+	waiting=${DOCKER_LIBRARY_START_TIMEOUT:-20}
 	echo "waiting to start..."
 	set +e +o pipefail +x
 	while [ "$waiting" -gt 0 ]
