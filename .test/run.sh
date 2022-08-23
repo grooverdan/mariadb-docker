@@ -595,3 +595,5 @@ binlog)
 	echo "Test $2 not found" >&2
 	exit 1
 esac
+
+echo "All tests successful"
