@@ -243,6 +243,10 @@ docker_init_database_dir() {
 			mariadbdArgs+=("$arg")
 		fi
 	done
+	local init_db_file=
+	init_db_file=$(mktemp)
+	docker_setup_db
+	printf "FLUSH PRIVILEGES;\n%s" "$db_init" > "$init_db_file"
 	mariadb-install-db "${installArgs[@]}" "${mariadbdArgs[@]}" \
 		--cross-bootstrap \
 		--skip-test-db \
@@ -251,7 +255,10 @@ docker_init_database_dir() {
 		--skip-log-bin \
 		--expire-logs-days=0 \
 		--loose-innodb_buffer_pool_load_at_startup=0 \
-		--loose-innodb_buffer_pool_dump_at_shutdown=0
+		--loose-innodb_buffer_pool_dump_at_shutdown=0 \
+		--extra-file="${init_db_file}"
+	rm "$init_db_file"
+
 	mysql_note "Database files initialized"
 }
 
@@ -476,10 +483,8 @@ docker_setup_db() {
 		fi
 	fi
 
-	mysql_note "Securing system users (equivalent to running mysql_secure_installation)"
-	# tell docker_process_sql to not use MARIADB_ROOT_PASSWORD since it is just now being set
-	# --binary-mode to save us from the semi-mad users go out of their way to confuse the encoding.
-	docker_process_sql --dont-use-mysql-root-password --database=mysql --binary-mode <<-EOSQL
+	# M10.5/6 local db_init=
+	read -r -d '' db_init <<-EOSQL || true
 		-- Securing system users shouldn't be replicated
 		SET @orig_sql_log_bin= @@SESSION.SQL_LOG_BIN;
 		SET @@SESSION.SQL_LOG_BIN=0;
@@ -504,6 +509,10 @@ docker_setup_db() {
 
 		${changeMasterTo}
 	EOSQL
+	mysql_note "Securing system users (equivalent to running mysql_secure_installation)"
+	# tell docker_process_sql to not use MARIADB_ROOT_PASSWORD since it is just now being set
+	# --binary-mode to save us from the semi-mad users go out of their way to confuse the encoding.
+	# M10.5/6 docker_process_sql --dont-use-mysql-root-password --database=mysql --binary-mode <<< "$db_init"
 }
 
 # create a new installation
@@ -539,25 +548,30 @@ docker_mariadb_init()
 	fi
 	docker_init_database_dir "$@"
 
-	mysql_note "Starting temporary server"
-	docker_temp_server_start "$@"
-	mysql_note "Temporary server started."
+	shopt -s nullglob
+	local initdb_files=( /docker-entrypoint-initdb.d/* )
+	shopt -u nullglob
+	if [ ${#initdb_files[@]} -gt 0 ] || [ -n "${MARIADB_ROOT_PASSWORD_HASH}" ]; then
+		mysql_note "Starting temporary server"
+		docker_temp_server_start "$@"
+		mysql_note "Temporary server started."
 
-	docker_setup_db
-	docker_process_init_files /docker-entrypoint-initdb.d/*
-	# Wait until after /docker-entrypoint-initdb.d is performed before setting
-	# root@localhost password to a hash we don't know the password for.
-	if [ -n "${MARIADB_ROOT_PASSWORD_HASH}" ]; then
-		mysql_note "Setting root@localhost password hash"
-		docker_process_sql --dont-use-mysql-root-password --binary-mode <<-EOSQL
-			SET @@SESSION.SQL_LOG_BIN=0;
-			SET PASSWORD FOR 'root'@'localhost'= '${MARIADB_ROOT_PASSWORD_HASH}';
-		EOSQL
+		docker_setup_db
+		docker_process_init_files "${initdb_files[@]}"
+		# Wait until after /docker-entrypoint-initdb.d is performed before setting
+		# root@localhost password to a hash we don't know the password for.
+		if [ -n "${MARIADB_ROOT_PASSWORD_HASH}" ]; then
+			mysql_note "Setting root@localhost password hash"
+			docker_process_sql --dont-use-mysql-root-password --binary-mode <<-EOSQL
+				SET @@SESSION.SQL_LOG_BIN=0;
+				SET PASSWORD FOR 'root'@'localhost'= '${MARIADB_ROOT_PASSWORD_HASH}';
+			EOSQL
+		fi
+
+		mysql_note "Stopping temporary server"
+		docker_temp_server_stop
+		mysql_note "Temporary server stopped"
 	fi
-
-	mysql_note "Stopping temporary server"
-	docker_temp_server_stop
-	mysql_note "Temporary server stopped"
 
 	echo
 	mysql_note "MariaDB init process done. Ready for start up."
