@@ -1,0 +1,297 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "govulncheck/vex:a8d0efc7da3b073486b648b2e66a4b621805af6b1aed5cb9b7b37632c9efd261",
+  "author": "Unknown Author",
+  "timestamp": "2026-01-06T01:36:36.086229699Z",
+  "version": 1,
+  "tooling": "https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck",
+  "statements": [
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4006",
+        "name": "GO-2025-4006",
+        "description": "Excessive CPU consumption in ParseAddress in net/mail",
+        "aliases": [
+          "CVE-2025-61725",
+          "CVE-2025-61725"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4007",
+        "name": "GO-2025-4007",
+        "description": "Quadratic complexity when checking name constraints in crypto/x509",
+        "aliases": [
+          "CVE-2025-58187",
+          "CVE-2025-58187"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4008",
+        "name": "GO-2025-4008",
+        "description": "ALPN negotiation error contains attacker controlled information in crypto/tls",
+        "aliases": [
+          "CVE-2025-58189",
+          "CVE-2025-58189"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4009",
+        "name": "GO-2025-4009",
+        "description": "Quadratic complexity when parsing some invalid inputs in encoding/pem",
+        "aliases": [
+          "CVE-2025-61723",
+          "CVE-2025-61723"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4010",
+        "name": "GO-2025-4010",
+        "description": "Insufficient validation of bracketed IPv6 hostnames in net/url",
+        "aliases": [
+          "CVE-2025-47912",
+          "CVE-2025-47912"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4011",
+        "name": "GO-2025-4011",
+        "description": "Parsing DER payload can cause memory exhaustion in encoding/asn1",
+        "aliases": [
+          "CVE-2025-58185",
+          "CVE-2025-58185"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4012",
+        "name": "GO-2025-4012",
+        "description": "Lack of limit when parsing cookies can cause memory exhaustion in net/http",
+        "aliases": [
+          "CVE-2025-58186",
+          "CVE-2025-58186"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4013",
+        "name": "GO-2025-4013",
+        "description": "Panic when validating certificates with DSA public keys in crypto/x509",
+        "aliases": [
+          "CVE-2025-58188",
+          "CVE-2025-58188"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4014",
+        "name": "GO-2025-4014",
+        "description": "Unbounded allocation when parsing GNU sparse map in archive/tar",
+        "aliases": [
+          "CVE-2025-58183",
+          "CVE-2025-58183"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4015",
+        "name": "GO-2025-4015",
+        "description": "Excessive CPU consumption in Reader.ReadResponse in net/textproto",
+        "aliases": [
+          "CVE-2025-61724",
+          "CVE-2025-61724"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4155",
+        "name": "GO-2025-4155",
+        "description": "Excessive resource consumption when printing error string for host certificate validation in crypto/x509",
+        "aliases": [
+          "CVE-2025-61729",
+          "CVE-2025-61729"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    },
+    {
+      "vulnerability": {
+        "@id": "https://pkg.go.dev/vuln/GO-2025-4175",
+        "name": "GO-2025-4175",
+        "description": "Improper application of excluded DNS name constraints when verifying wildcard names in crypto/x509",
+        "aliases": [
+          "CVE-2025-61727"
+        ]
+      },
+      "products": [
+        {
+          "@id": "pkg:golang/github.com/tianon/gosu@v1.19.0",
+          "subcomponents": [
+            {
+              "@id": "pkg:golang/stdlib@v1.24.6"
+            }
+          ]
+        }
+      ],
+      "status": "not_affected",
+      "justification": "vulnerable_code_not_present",
+      "impact_statement": "Govulncheck determined that the vulnerable code isn't called"
+    }
+  ]
+}
